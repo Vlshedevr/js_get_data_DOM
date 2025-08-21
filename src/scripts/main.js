@@ -4,7 +4,11 @@ const livePeople = document.querySelectorAll('.population');
 
 const arrayLivepeople = [...livePeople].map((number) => number.textContent);
 
-const parser = arrayLivepeople[0].match(/[^0-9]/)[0]; // мій роздільник
+const firstValidStr = arrayLivepeople.find((str) => str && /\d/.test(str));
+
+const match = firstValidStr ? firstValidStr.match(/[^0-9]/) : null;
+
+const parser = match?.[0] || '';
 
 const strPeopl = arrayLivepeople.map((number) => number.replaceAll(parser, ''));
 
@@ -13,7 +17,14 @@ const numPepople = strPeopl
   .filter((num) => !isNaN(num));
 
 let totalPeople = numPepople.reduce((acum, number) => acum + number, 0);
-let averagePeople = totalPeople / numPepople.length;
+
+let averagePeople;
+
+if (numPepople.length === 0) {
+  averagePeople = 0;
+} else {
+  averagePeople = totalPeople / numPepople.length;
+}
 
 function formater(number, par) {
   const num = Math.floor(number)
